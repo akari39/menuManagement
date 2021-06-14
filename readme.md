@@ -40,11 +40,11 @@ npm run start
 第 31 行  
 
 client: {  
-host: 数据库地址,  
-port: 端口号,  
-user: 用户名,  
-password: 密码,  
-database: 数据库名称  
+  host: 数据库地址,  
+  port: 端口号,  
+  user: 用户名,  
+  password: 密码,  
+  database: 数据库名称  
 }
 
 后端服务启动  
