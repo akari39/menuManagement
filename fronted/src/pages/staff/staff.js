@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-13 20:04:48
- * @LastEditTime: 2021-06-14 21:26:05
+ * @LastEditTime: 2021-06-15 00:56:45
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -48,9 +48,11 @@ const Staff = () => {
           <Button type="link" onClick={() => handleEdit(record.id)}>
             编辑
           </Button>
-          <Button type="link" onClick={() => handleDelete(record.id)}>
-            删除
-          </Button>
+          {`${record.id}` !== localStorage.getItem('userId') && (
+            <Button type="link" onClick={() => handleDelete(record.id)}>
+              删除
+            </Button>
+          )}
         </>
       )
     }
