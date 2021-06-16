@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-13 20:04:48
- * @LastEditTime: 2021-06-16 23:24:44
+ * @LastEditTime: 2021-06-16 23:27:48
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -255,6 +255,7 @@ const Desk = () => {
 
   const handleQRCodeCancel = () => {
     setShowQRCodeModal(false)
+    setQRCodeList([])
   }
 
   return (
