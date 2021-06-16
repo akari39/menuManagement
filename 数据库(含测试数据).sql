@@ -16,6 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `childdesk`
+--
+
+DROP TABLE IF EXISTS `childdesk`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `childdesk` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `deskName` varchar(100) NOT NULL,
+  `parentId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `childdesk_FK` (`parentId`),
+  CONSTRAINT `childdesk_FK` FOREIGN KEY (`parentId`) REFERENCES `desk` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `childdesk`
+--
+
+LOCK TABLES `childdesk` WRITE;
+/*!40000 ALTER TABLE `childdesk` DISABLE KEYS */;
+INSERT INTO `childdesk` VALUES (31,'大桌1',6,'2021-06-16 22:01:02','2021-06-16 22:01:02',NULL),(32,'大桌2',6,'2021-06-16 22:01:02','2021-06-16 22:01:02',NULL),(33,'大桌3',6,'2021-06-16 22:01:02','2021-06-16 22:01:02',NULL),(34,'大桌4',6,'2021-06-16 22:01:02','2021-06-16 22:01:02',NULL),(35,'大桌5',6,'2021-06-16 22:01:02','2021-06-16 22:01:02',NULL),(36,'小桌1',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(37,'小桌2',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(38,'小桌3',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(39,'小桌4',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(40,'小桌5',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(41,'小桌6',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(42,'小桌7',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(43,'小桌8',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(44,'小桌9',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL),(45,'小桌10',7,'2021-06-16 22:01:06','2021-06-16 22:01:06',NULL);
+/*!40000 ALTER TABLE `childdesk` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `childdish`
 --
 
@@ -69,7 +99,7 @@ CREATE TABLE `desk` (
   UNIQUE KEY `id` (`id`),
   KEY `restaurantId` (`restaurantId`),
   CONSTRAINT `desk_ibfk_1` FOREIGN KEY (`restaurantId`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +108,7 @@ CREATE TABLE `desk` (
 
 LOCK TABLES `desk` WRITE;
 /*!40000 ALTER TABLE `desk` DISABLE KEYS */;
-INSERT INTO `desk` VALUES (1,'大圆桌',10,5,6,6,'2021-06-14 14:43:02','2021-06-14 14:43:02',NULL),(2,'小桌',20,5,2,2,'2021-06-14 14:43:17','2021-06-14 14:43:17',NULL);
+INSERT INTO `desk` VALUES (6,'大桌',5,5,5,5,'2021-06-16 22:00:44','2021-06-16 22:01:02',NULL),(7,'小桌',10,5,2,2,'2021-06-16 22:00:56','2021-06-16 22:01:06',NULL);
 /*!40000 ALTER TABLE `desk` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +174,7 @@ CREATE TABLE `orderdish` (
 
 LOCK TABLES `orderdish` WRITE;
 /*!40000 ALTER TABLE `orderdish` DISABLE KEYS */;
-INSERT INTO `orderdish` VALUES (1,1,1,60,3,'2021-06-14 22:45:23','2021-06-14 22:45:23',NULL),(1,2,3,15,1,'2021-06-14 22:45:23','2021-06-14 22:45:23',NULL),(2,1,1,20,1,'2021-06-14 22:53:24','2021-06-14 22:53:24',NULL),(3,1,2,165,11,'2021-06-14 23:01:28','2021-06-14 23:01:28',NULL);
+INSERT INTO `orderdish` VALUES (1,1,1,60,3,'2021-06-14 22:45:23','2021-06-14 22:45:23',NULL),(1,2,3,15,1,'2021-06-14 22:45:23','2021-06-14 22:45:23',NULL),(2,1,1,20,1,'2021-06-14 22:53:24','2021-06-14 22:53:24',NULL),(3,1,2,165,11,'2021-06-14 23:01:28','2021-06-14 23:01:28',NULL),(6,1,1,20,1,'2021-06-16 22:20:21','2021-06-16 22:20:21',NULL),(7,1,1,20,1,'2021-06-16 22:26:42','2021-06-16 22:26:42',NULL);
 /*!40000 ALTER TABLE `orderdish` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +190,7 @@ CREATE TABLE `orders` (
   `totalPrice` double NOT NULL,
   `orderedBy` int(11) NOT NULL,
   `restaurantServiceId` int(11) DEFAULT NULL,
-  `restaurantDeskId` int(11) NOT NULL,
+  `restaurantChildDeskId` int(11) NOT NULL,
   `restaurantId` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -169,12 +199,12 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`orderId`),
   UNIQUE KEY `orderId` (`orderId`),
   KEY `orderedBy` (`orderedBy`),
-  KEY `restaurantDeskId` (`restaurantDeskId`),
+  KEY `restaurantDeskId` (`restaurantChildDeskId`),
   KEY `restaurantId` (`restaurantId`),
+  CONSTRAINT `orders_FK` FOREIGN KEY (`restaurantChildDeskId`) REFERENCES `childdesk` (`id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`orderedBy`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`restaurantDeskId`) REFERENCES `desk` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`restaurantId`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +213,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,75,7,1,2,5,'2021-06-14 16:38:51','2021-06-14 22:53:04',NULL,3),(2,20,7,1,2,5,'2021-06-14 22:53:24','2021-06-14 23:01:30',NULL,2),(3,165,7,1,1,5,'2021-06-14 23:01:28','2021-06-14 23:01:28',NULL,1);
+INSERT INTO `orders` VALUES (6,20,7,1,31,5,'2021-06-16 22:20:21','2021-06-16 22:33:34',NULL,3),(7,20,7,1,33,5,'2021-06-16 22:26:42','2021-06-16 22:26:42',NULL,1);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,7 +358,7 @@ CREATE TABLE `user` (
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,4 +384,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-14 23:38:32
+-- Dump completed on 2021-06-16 23:31:40

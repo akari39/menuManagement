@@ -16,6 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `childdesk`
+--
+
+DROP TABLE IF EXISTS `childdesk`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `childdesk` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `deskName` varchar(100) NOT NULL,
+  `parentId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `deletedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `childdesk_FK` (`parentId`),
+  CONSTRAINT `childdesk_FK` FOREIGN KEY (`parentId`) REFERENCES `desk` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `childdish`
 --
 
@@ -59,7 +79,7 @@ CREATE TABLE `desk` (
   UNIQUE KEY `id` (`id`),
   KEY `restaurantId` (`restaurantId`),
   CONSTRAINT `desk_ibfk_1` FOREIGN KEY (`restaurantId`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +140,7 @@ CREATE TABLE `orders` (
   `totalPrice` double NOT NULL,
   `orderedBy` int(11) NOT NULL,
   `restaurantServiceId` int(11) DEFAULT NULL,
-  `restaurantDeskId` int(11) NOT NULL,
+  `restaurantChildDeskId` int(11) NOT NULL,
   `restaurantId` int(11) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -129,12 +149,12 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`orderId`),
   UNIQUE KEY `orderId` (`orderId`),
   KEY `orderedBy` (`orderedBy`),
-  KEY `restaurantDeskId` (`restaurantDeskId`),
+  KEY `restaurantDeskId` (`restaurantChildDeskId`),
   KEY `restaurantId` (`restaurantId`),
+  CONSTRAINT `orders_FK` FOREIGN KEY (`restaurantChildDeskId`) REFERENCES `childdesk` (`id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`orderedBy`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`restaurantDeskId`) REFERENCES `desk` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`restaurantId`) REFERENCES `restaurant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +258,7 @@ CREATE TABLE `user` (
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,4 +274,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-14 23:39:24
+-- Dump completed on 2021-06-16 23:31:15
