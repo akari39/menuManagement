@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-10 22:29:45
- * @LastEditTime: 2021-06-14 22:51:28
+ * @LastEditTime: 2021-06-16 22:51:11
  */
 /*
  * @Date: 2021-06-10 22:29:45
@@ -56,6 +56,16 @@ module.exports = (app) => {
   )
   router.post('/api/desk/operate', adminAuth, controller.desk.desk.operate)
   router.get('/api/desk/getAllDesk', adminAuth, controller.desk.desk.getAllDesk)
+  router.get(
+    '/api/desk/getAllChildDesk',
+    adminAuth,
+    controller.desk.desk.getAllChildDesk
+  )
+  router.get(
+    '/api/desk/getAllEmptyChildDesk',
+    adminAuth,
+    controller.desk.desk.getAllEmptyChildDesk
+  )
   router.get(
     '/api/desk/getDeskById',
     adminAuth,

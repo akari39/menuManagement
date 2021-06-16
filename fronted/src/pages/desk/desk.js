@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-13 20:04:48
- * @LastEditTime: 2021-06-14 13:25:50
+ * @LastEditTime: 2021-06-16 23:24:44
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -14,6 +14,7 @@ import {
   message
 } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import QRCode from 'qrcode'
 import '@style/pages/desk.less'
 import myAxios from '@config/myAxios'
 import { PageContext } from '@config/context'
@@ -59,6 +60,9 @@ const Desk = () => {
           <Button type="link" onClick={() => handleEdit(record.id)}>
             编辑
           </Button>
+          <Button type="link" onClick={() => handleShowQRCode(record.id)}>
+            查看二维码
+          </Button>
           <Button type="link" onClick={() => handleDelete(record.id)}>
             删除
           </Button>
@@ -74,6 +78,8 @@ const Desk = () => {
   })
   const [editId, setEditId] = useState()
   const [showModal, setShowModal] = useState(false)
+  const [showQRCodeModal, setShowQRCodeModal] = useState(false)
+  const [QRCodeList, setQRCodeList] = useState([])
 
   useEffect(() => {
     handleTableChange(pagination)
@@ -219,6 +225,38 @@ const Desk = () => {
     })
   }
 
+  const handleShowQRCode = (deskId) => {
+    myAxios(
+      {
+        ...servicePath.getAllChildDesk,
+        params: {
+          restaurantId: localStorage.getItem('restaurantId'),
+          deskId
+        }
+      },
+      async (res) => {
+        if (res.data.success) {
+          const { list } = res.data.data
+          const ImageList = await Promise.all(
+            list.map((item) => QRCode.toDataURL(`${item.id}`))
+          )
+          setQRCodeList(ImageList)
+          setShowQRCodeModal(true)
+        } else {
+          message.error(res.data.message)
+        }
+      },
+      () => {
+        message.error('查询失败,请联系管理员')
+      },
+      pageContext
+    )
+  }
+
+  const handleQRCodeCancel = () => {
+    setShowQRCodeModal(false)
+  }
+
   return (
     <div className="desk-container">
       <PageHeader className="site-page-header" title="桌椅管理" />
@@ -290,6 +328,17 @@ const Desk = () => {
             />
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="查看二维码"
+        visible={showQRCodeModal}
+        maskClosable={false}
+        footer={null}
+        onCancel={handleQRCodeCancel}
+      >
+        {QRCodeList.map((item, index) => (
+          <img key={index} src={item} alt="QRCode" />
+        ))}
       </Modal>
     </div>
   )

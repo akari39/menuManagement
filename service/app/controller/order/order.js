@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-14 16:29:08
- * @LastEditTime: 2021-06-14 22:57:15
+ * @LastEditTime: 2021-06-16 22:12:23
  */
 const Controller = require('egg').Controller
 const { success, fail } = require('../../public/requestBody')
@@ -71,8 +71,8 @@ class OrderController extends Controller {
     if (Number(orderStatus) > 0) {
       statusSql = ` and orders.orderStatus = ${orderStatus}`
     }
-    const orderSql = `SELECT orders.orderId, orders.totalPrice, orders.orderStatus, desk.type as desk, service.name as service FROM orders
-      INNER JOIN desk ON orders.restaurantDeskId = desk.id
+    const orderSql = `SELECT orders.orderId, orders.totalPrice, orders.orderStatus, childdesk.deskName as desk, service.name as service FROM orders
+      INNER JOIN childdesk ON orders.restaurantChildDeskId = childdesk.id
       INNER JOIN service ON orders.restaurantServiceId = service.id where orders.restaurantId = '${restaurantId}' ${statusSql}
       and to_days(orders.createdAt) = to_days('${searchDate}') and orders.orderStatus != 4`
 
@@ -150,7 +150,7 @@ class OrderController extends Controller {
 
   async getOrderById() {
     const { id } = this.ctx.query
-    const orderSql = `SELECT orders.restaurantServiceId, orders.restaurantDeskId, orders.orderStatus FROM orders where orderId = '${id}'`
+    const orderSql = `SELECT orders.restaurantServiceId, orders.restaurantChildDeskId, orders.orderStatus FROM orders where orderId = '${id}'`
     const orderdishSql = `SELECT dishId, childDishId, count FROM orderdish where orderId = '${id}'`
     const order = await this.app.mysql.query(orderSql)
     const orderdish = await this.app.mysql.query(orderdishSql)

@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-10 23:20:58
- * @LastEditTime: 2021-06-14 22:51:22
+ * @LastEditTime: 2021-06-16 22:52:36
  */
 // import { apiTarget } from '@config/config'
 
@@ -38,6 +38,11 @@ const servicePath = {
   getDishKind: { url: `${apiUrl}/dish/getDishKind`, method: 'get' }, // 查看菜品规格
   operateDesk: { url: `${apiUrl}/desk/operate`, method: 'post' }, // 新增、修改桌椅
   getAllDesk: { url: `${apiUrl}/desk/getAllDesk`, method: 'get' }, // 获取桌椅
+  getAllChildDesk: { url: `${apiUrl}/desk/getAllChildDesk`, method: 'get' }, // 获取全部桌椅
+  getAllEmptyChildDesk: {
+    url: `${apiUrl}/desk/getAllEmptyChildDesk`,
+    method: 'get'
+  }, // 获取全部桌椅
   getDeskById: { url: `${apiUrl}/desk/getDeskById`, method: 'get' },
   deleteDeskById: {
     url: `${apiUrl}/desk/deleteDeskById`,

@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-11 00:13:07
- * @LastEditTime: 2021-06-14 23:18:05
+ * @LastEditTime: 2021-06-16 22:27:05
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -124,7 +124,7 @@ const Home = () => {
   const getDeskList = () => {
     myAxios(
       {
-        ...servicePath.getAllDesk,
+        ...servicePath.getAllEmptyChildDesk,
         params: {
           restaurantId: localStorage.getItem('restaurantId')
         }
@@ -135,7 +135,7 @@ const Home = () => {
           setDeskList(
             list.map((item) => ({
               id: item.id,
-              type: item.type
+              deskName: item.deskName
             }))
           )
         } else {
@@ -256,7 +256,7 @@ const Home = () => {
         if (res.data.success) {
           const { order, orderdish } = res.data.data
           form.setFieldsValue({
-            desk: order.restaurantDeskId,
+            desk: order.restaurantChildDeskId,
             service: order.restaurantServiceId,
             childOrders: orderdish.map((item) => ({
               dishName: item.dishId,
@@ -316,7 +316,7 @@ const Home = () => {
       const orderForm = {
         orderedBy: localStorage.getItem('userId'),
         restaurantServiceId: formValue.service,
-        restaurantDeskId: formValue.desk,
+        restaurantChildDeskId: formValue.desk,
         restaurantId: localStorage.getItem('restaurantId')
       }
       const childOrderForm = formValue.childOrders.map((item) => {
@@ -349,6 +349,7 @@ const Home = () => {
           if (res.data.success) {
             message.success('下单成功')
             handleCancel()
+            getDeskList()
             searchAllOrders()
           } else {
             message.error(res.data.message)
@@ -442,6 +443,7 @@ const Home = () => {
       (res) => {
         if (res.data.success) {
           message.success('结账成功')
+          getDeskList()
           searchAllOrders()
         } else {
           message.error(res.data.message)
@@ -494,7 +496,7 @@ const Home = () => {
                       <span>{order.id}</span>
                     </div>
                     <div>
-                      <span>桌子类型:</span>
+                      <span>桌号:</span>
                       <span>{order.desk}</span>
                     </div>
                   </div>
@@ -564,11 +566,11 @@ const Home = () => {
         className="order-modal"
       >
         <Form {...layout} form={form}>
-          <Form.Item name="desk" label="桌子类型" rules={[{ required: true }]}>
-            <Select placeholder="请选择桌子类型" size="large" disabled={editId}>
+          <Form.Item name="desk" label="桌号" rules={[{ required: true }]}>
+            <Select placeholder="请选择桌号" size="large" disabled={editId}>
               {deskList.map((item) => (
                 <Option key={item.id} value={item.id}>
-                  {item.type}
+                  {item.deskName}
                 </Option>
               ))}
             </Select>
