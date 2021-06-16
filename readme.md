@@ -64,7 +64,7 @@ sql文件已更新
 
 新增qrcode
 
-需要安装包
+需要安装包  
 cd fronted  
 npm install
 
