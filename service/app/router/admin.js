@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-10 22:29:45
- * @LastEditTime: 2021-06-16 22:51:11
+ * @LastEditTime: 2021-06-17 21:36:56
  */
 /*
  * @Date: 2021-06-10 22:29:45
@@ -23,9 +23,14 @@ module.exports = (app) => {
     controller.menuKind.menuKind.getMenuAllKind
   )
   router.get(
-    '/api/menuKind/getMenuKindById',
+    '/api/menuKind/getAllDishesByChildDesk',
     adminAuth,
-    controller.menuKind.menuKind.getMenuKindById
+    controller.menuKind.menuKind.getAllDishesByChildDesk
+  )
+  router.get(
+    '/api/menuKind/deleteMenuKindById',
+    adminAuth,
+    controller.menuKind.menuKind.deleteMenuKindById
   )
   router.get(
     '/api/menuKind/deleteMenuKindById',
@@ -154,6 +159,11 @@ module.exports = (app) => {
     '/api/order/getOrderById',
     adminAuth,
     controller.order.order.getOrderById
+  )
+  router.get(
+    '/api/order/getOrdersByUserId',
+    adminAuth,
+    controller.order.order.getOrdersByUserId
   )
   router.get(
     '/api/order/waitOrderPay',

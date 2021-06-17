@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-14 16:29:08
- * @LastEditTime: 2021-06-16 22:12:23
+ * @LastEditTime: 2021-06-17 22:03:17
  */
 const Controller = require('egg').Controller
 const { success, fail } = require('../../public/requestBody')
@@ -150,8 +150,14 @@ class OrderController extends Controller {
 
   async getOrderById() {
     const { id } = this.ctx.query
-    const orderSql = `SELECT orders.restaurantServiceId, orders.restaurantChildDeskId, orders.orderStatus FROM orders where orderId = '${id}'`
-    const orderdishSql = `SELECT dishId, childDishId, count FROM orderdish where orderId = '${id}'`
+    const orderSql = `SELECT orders.orderId, orders.restaurantServiceId, orders.restaurantChildDeskId, orders.orderStatus, service.name, childdesk.deskName FROM orders
+    INNER JOIN service ON orders.restaurantServiceId = service.id
+    INNER JOIN childdesk ON orders.restaurantChildDeskId = childdesk.id
+    where orders.orderId = '${id}'`
+    const orderdishSql = `SELECT orderdish.dishId, orderdish.childDishId, orderdish.count, dish.name as dishName, childdish.name as childDishName FROM orderdish
+    INNER JOIN dish ON orderdish.dishId = dish.id
+    INNER JOIN childdish ON orderdish.childDishId = childdish.id
+    where orderdish.orderId = '${id}'`
     const order = await this.app.mysql.query(orderSql)
     const orderdish = await this.app.mysql.query(orderdishSql)
     if (order.length > 0) {
@@ -159,6 +165,35 @@ class OrderController extends Controller {
         order: order[0],
         orderdish
       })
+    } else {
+      this.ctx.body = fail('未找到该订单')
+    }
+  }
+
+  async getOrdersByUserId() {
+    const { userId } = this.ctx.query
+    const orderSql = `SELECT orders.orderId, orders.restaurantServiceId, orders.restaurantChildDeskId, orders.orderStatus, service.name, childdesk.deskName FROM orders
+    INNER JOIN service ON orders.restaurantServiceId = service.id
+    INNER JOIN childdesk ON orders.restaurantChildDeskId = childdesk.id
+     where orderedBy = '${userId}'`
+    const order = await this.app.mysql.query(orderSql)
+
+    const orderData = await Promise.all(
+      order.map(async (item) => {
+        const orderdishSql = `SELECT orderdish.dishId, orderdish.childDishId, orderdish.count, dish.name as dishName, childdish.name as childDishName FROM orderdish
+        INNER JOIN dish ON orderdish.dishId = dish.id
+        INNER JOIN childdish ON orderdish.childDishId = childdish.id
+        where orderId = '${item.orderId}'`
+        const dishForm = await this.app.mysql.query(orderdishSql)
+        return {
+          order: item,
+          orderdish: dishForm
+        }
+      })
+    )
+
+    if (orderData.length > 0) {
+      this.ctx.body = success(orderData)
     } else {
       this.ctx.body = fail('未找到该订单')
     }
