@@ -326,7 +326,7 @@ const Restaurant = () => {
               name="image"
               listType="picture-card"
               showUploadList={false}
-              action="/api/file/uploadFile"
+              action="/file/uploadFile"
               beforeUpload={beforeUpload}
               onChange={handleChangeImage}
             >
