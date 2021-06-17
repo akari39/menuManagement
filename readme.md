@@ -52,3 +52,19 @@ client: {
 cd service  
 npm install (第一次启动运行此命令，后续不需要这个命令,跳过此步骤)  
 npm run dev
+
+---
+2021.06.16  
+
+新增 childdesk 表  
+修改 orders表 restaurantChildDeskId  
+sql文件已更新  
+
+---
+
+新增qrcode
+
+需要安装包  
+cd fronted  
+npm install
+
