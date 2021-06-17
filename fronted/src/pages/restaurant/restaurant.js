@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-13 20:04:48
- * @LastEditTime: 2021-06-14 02:05:26
+ * @LastEditTime: 2021-06-17 23:48:38
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -326,7 +326,7 @@ const Restaurant = () => {
               name="image"
               listType="picture-card"
               showUploadList={false}
-              action="http://127.0.0.1:7001/file/uploadFile"
+              action="/api/file/uploadFile"
               beforeUpload={beforeUpload}
               onChange={handleChangeImage}
             >

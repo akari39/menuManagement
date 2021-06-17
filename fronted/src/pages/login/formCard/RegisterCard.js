@@ -206,7 +206,7 @@ const RegisterCard = (props) => {
                   name="image"
                   listType="picture-card"
                   showUploadList={false}
-                  action="http://127.0.0.1:7001/file/uploadFile"
+                  action="/api/file/uploadFile"
                   beforeUpload={beforeUpload}
                   onChange={handleChangeImage}
                 >
