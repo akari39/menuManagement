@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-12 12:42:59
- * @LastEditTime: 2021-06-12 16:41:05
+ * @LastEditTime: 2021-06-19 01:43:01
  */
 const Service = require('egg').Service
 const path = require('path')
@@ -25,7 +25,10 @@ class ToolsService extends Service {
     const uploadDir = path.join(dir, date + path.extname(filename))
     return {
       uploadDir,
-      saveDir: this.ctx.origin + uploadDir.slice(3).replace(/\\/g, '/')
+      saveDir:
+        'http://' +
+        this.ctx.request.header.host +
+        uploadDir.slice(3).replace(/\\/g, '/')
     }
   }
 }
