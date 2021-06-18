@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-12 03:01:47
- * @LastEditTime: 2021-06-18 00:06:17
+ * @LastEditTime: 2021-06-18 21:36:48
  */
 import React, { useState, useEffect, useContext } from 'react'
 import {
@@ -302,7 +302,7 @@ const MenuKind = () => {
               name="image"
               listType="picture-card"
               showUploadList={false}
-              action="/file/uploadFile"
+              action="/api/file/uploadFile"
               beforeUpload={beforeUpload}
               onChange={handleChangeImage}
             >

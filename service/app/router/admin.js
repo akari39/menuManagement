@@ -1,6 +1,6 @@
 /*
  * @Date: 2021-06-10 22:29:45
- * @LastEditTime: 2021-06-17 21:36:56
+ * @LastEditTime: 2021-06-18 21:35:22
  */
 /*
  * @Date: 2021-06-10 22:29:45
@@ -23,9 +23,9 @@ module.exports = (app) => {
     controller.menuKind.menuKind.getMenuAllKind
   )
   router.get(
-    '/api/menuKind/getAllDishesByChildDesk',
+    '/api/menuKind/getMenuKindById',
     adminAuth,
-    controller.menuKind.menuKind.getAllDishesByChildDesk
+    controller.menuKind.menuKind.getMenuKindById
   )
   router.get(
     '/api/menuKind/deleteMenuKindById',
