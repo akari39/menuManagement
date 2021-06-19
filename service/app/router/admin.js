@@ -59,6 +59,10 @@ module.exports = (app) => {
     adminAuth,
     controller.dish.dish.getDishKind
   )
+  router.get(
+    '/api/menuKind/getAllDishesByChildDesk',
+    controller.menuKind.menuKind.getAllDishesByChildDesk
+  )
   router.post('/api/desk/operate', adminAuth, controller.desk.desk.operate)
   router.get('/api/desk/getAllDesk', adminAuth, controller.desk.desk.getAllDesk)
   router.get(
